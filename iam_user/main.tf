@@ -8,8 +8,8 @@ resource "aws_iam_access_key" "access_key" {
 }
 
 resource "aws_iam_user_policy" "user_policies" {
-    count = "${length(split(",",var.actions))}"
-    name = "${var.username}-policy-${count.index}"
+    count = "${length(split(",",var.effects))}"
+    name = "${var.username}-policy-${count.index}-${element(split(",",var.effects),count.index)}"
     user = "${aws_iam_user.user.name}"
     policy = <<EOF
 {
@@ -17,9 +17,9 @@ resource "aws_iam_user_policy" "user_policies" {
   "Statement": [
     {
       "Action": [
-       "${element(split(",",var.actions),count.index)}"
+        ${join(",",formatlist("\"%s\"",split(",",element(split("/",var.actions),count.index))))}       
       ],
-      "Effect": "${element(split(",",var.action_privs),count.index)}",
+      "Effect": "${element(split(",",var.effects),count.index)}",
       "Resource": "${element(split(",",var.resources),count.index)}"
     }
   ]

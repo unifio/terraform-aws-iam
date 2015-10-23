@@ -12,7 +12,7 @@ variable "members" {}
 variable "actions" {}
 
 # Action disposition (Allow | Deny), 1:1 between actions and action_types
-variable "action_privs" {}
+variable "effects" {}
 
 # Resource filter for the action/action_types eg, "*" or the id of an aws Resource
 variable "resources" {}

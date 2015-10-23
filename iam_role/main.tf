@@ -18,8 +18,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "role_policies" {
-    count = "${length(split(",",var.actions))}"
-    name = "${var.rolename}-policy-${count.index}"
+    count = "${length(split(",",var.effects))}"
+    name = "${var.rolename}-policy-${count.index}-${element(split(",",var.effects),count.index)}"
     role = "${aws_iam_role.role.id}"
     policy = <<EOF
 {
@@ -27,9 +27,9 @@ resource "aws_iam_role_policy" "role_policies" {
   "Statement": [
     {
       "Action": [
-       "${element(split(",",var.actions),count.index)}"
+        ${join(",",formatlist("\"%s\"",split(",",element(split("/",var.actions),count.index))))}
       ],
-      "Effect": "${element(split(",",var.action_privs),count.index)}",
+      "Effect": "${element(split(",",var.effects),count.index)}",
       "Resource": "${element(split(",",var.resources),count.index)}"
     }
   ]

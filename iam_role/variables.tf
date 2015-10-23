@@ -4,11 +4,11 @@ variable "rolename" {}
 # Service the role uses, eg "ec2.amazonaws.com"
 variable "service" {}
 
-# Action list ie "ec2:Describe,ec2:AttachVolume"
+# 2 dimensional action list ie array of arrays
 variable "actions" {}
 
-# Action disposition (Allow | Deny), 1:1 between actions and action_types
-variable "action_privs" {}
+# effects (Allow | Deny), 1:1 between action arrays, effects and resources
+variable "effects" {}
 
-# Resource filter for the action/action_types eg, "*" or the id of an aws Resource
+# Resource filter for the action arrays/effects eg, "*" or the arn of an aws Resource
 variable "resources" {}

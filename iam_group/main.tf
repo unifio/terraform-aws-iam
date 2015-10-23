@@ -4,8 +4,8 @@ resource "aws_iam_group" "group" {
 }
 
 resource "aws_iam_group_policy" "group_policies" {
-    count = "${length(split(",",var.actions))}"
-    name = "${var.groupname}-policy-${count.index}"
+    count = "${length(split(",",var.effects))}"
+    name = "${var.groupname}-policy-${count.index}-${element(split(",",var.effects),count.index)}"
     group = "${aws_iam_group.group.id}"
     policy = <<EOF
 {
@@ -13,9 +13,9 @@ resource "aws_iam_group_policy" "group_policies" {
   "Statement": [
     {
       "Action": [
-       "${element(split(",",var.actions),count.index)}"
+        ${join(",",formatlist("\"%s\"",split(",",element(split("/",var.actions),count.index))))}
       ],
-      "Effect": "${element(split(",",var.action_privs),count.index)}",
+      "Effect": "${element(split(",",var.effects),count.index)}",
       "Resource": "${element(split(",",var.resources),count.index)}"
     }
   ]

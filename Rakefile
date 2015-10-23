@@ -13,7 +13,7 @@ task :verify do
     vars.push("-var #{var}=\"#{value}\"")
   end
 
-  ['volume_manager_role', 'flow_log_role', 'volume_admin_user', 'volume_admin_group'].each do |stack|
+  ['flow_log_role', 'volume_admin_group', 'volume_admin_role', 'volume_admin_user'].each do |stack|
     task_args = {:stack => stack, :args => vars.join(' ')}
     Rake::Task['clean'].execute(Rake::TaskArguments.new(task_args.keys, task_args.values))
     Rake::Task['plan'].execute(Rake::TaskArguments.new(task_args.keys, task_args.values))
